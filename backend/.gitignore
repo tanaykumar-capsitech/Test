@@ -45,8 +45,8 @@ publish/
 *.publishsettings
 
 # ASP.NET Core
-appsettings.Local.json
-appsettings.Deployment.json
+appsettings.Development.json
+appsettings.Production.json
 
 # OS files
 .DS_Store
