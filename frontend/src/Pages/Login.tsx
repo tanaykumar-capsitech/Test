@@ -7,7 +7,7 @@ const Login = () =>{
 
     return(
         <>
-            <Card>
+            <Card style={{ margin: 'auto', marginTop: 300, width: 400 }}>
                 Login <br/>
 
                 <Link to="/register">Register</Link>

@@ -1,6 +1,7 @@
 import { Card } from "antd"
 import axios from "axios"
 import { useFormik } from "formik"
+import { Link } from "react-router-dom"
 
 interface RegisterProps {
     name: string,
@@ -37,6 +38,7 @@ const Register = () => {
                         <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} className="px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input><br />
                         <button type="submit" className="mt-3 px-2 border border-gray-300 bg-gray-100 hover:bg-gray-300 rounded-md">Register</button>
                     </form>
+                    <Link to="/">Login</Link>
                 </div>
             </Card>
         </>
