@@ -10,7 +10,7 @@ interface RegisterProps {
 
 const Register = () => {
     const RegisterUser = async (values: RegisterProps) => {
-        const result = await axios.post('http://localhost:5129/API/Auth/register', values)
+        await axios.post('http://localhost:5129/API/Auth/register', values)
     }
 
     const initial: RegisterProps = {
