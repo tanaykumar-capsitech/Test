@@ -21,7 +21,6 @@ const Register = () => {
     const RegisterUser = async (values: RegisterProps) => {
         const response = await axios.post(url + 'Auth/register', values)
         setLoading(false)
-        console.log(response.data)
 
         if (response.data.statusCode != 201) {
             setError(response.data.message)
@@ -49,7 +48,7 @@ const Register = () => {
 
     return (
         <>
-            <Card className="shadow-xl" style={{ margin: 'auto', marginTop: 300, width: '35vw', maxWidth: 350, minWidth: 300 }} title="Register">
+            <Card className="shadow-xl" style={{ margin: 'auto', marginTop: 300, width: '35vw', maxWidth: 350, minWidth: 300, borderRadius: 20 }} title="Register">
                 <form onSubmit={formik.handleSubmit} className="mb-2">
                     <div className="mb-2 w-full flex justify-between items-center">
                         <label >Name</label>
@@ -64,7 +63,7 @@ const Register = () => {
                         <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
                     </div>
                     <div className="text-[12px] text-red-600">{error}</div>
-                    <button type="submit" className="transition-all duration-300 mt-3 px-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:shadow-lg">{loading ? <Spin indicator={<LoadingOutlined spin />} size="small"></Spin>: 'Register'}</button>
+                    <button type="submit" className="w-20 transition-all duration-300 mt-3 px-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:shadow-lg">{loading ? <Spin indicator={<LoadingOutlined spin />} size="small"></Spin>: 'Register'}</button>
                 </form>
                 Already have an account? <Link to="/">Login</Link>
             </Card>

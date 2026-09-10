@@ -16,7 +16,8 @@ builder.Services.AddCors(option =>
     option.AddPolicy("AllowOrigin", policy =>
     {
         policy
-        .AllowAnyOrigin()
+        .WithOrigins("http://localhost:5173", "https://test-uatp-nine.vercel.app")
+        .AllowCredentials()
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
