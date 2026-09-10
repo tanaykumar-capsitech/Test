@@ -22,7 +22,7 @@ const Register = () => {
         const response = await axios.post(url + 'Auth/register', values)
         setLoading(false)
 
-        if (response.data.statusCode != 200) {
+        if (response.data.statusCode != 201) {
             setError(response.data.message)
 
             return
