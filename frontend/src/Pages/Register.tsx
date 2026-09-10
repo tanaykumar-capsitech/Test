@@ -1,4 +1,5 @@
-import { Card } from "antd"
+import { LoadingOutlined } from "@ant-design/icons"
+import { Card, Spin } from "antd"
 import axios from "axios"
 import { useFormik } from "formik"
 import { useState } from "react"
@@ -14,14 +15,15 @@ interface RegisterProps {
 
 const Register = () => {
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    
-    const RegisterUser = async (values: RegisterProps) => {
-        const response = await axios.post(url+'Auth/register', values)
 
+    const RegisterUser = async (values: RegisterProps) => {
+        const response = await axios.post(url + 'Auth/register', values)
+        setLoading(false)
         console.log(response.data)
 
-        if (response.data.statusCode != 201){
+        if (response.data.statusCode != 201) {
             setError(response.data.message)
 
             return
@@ -39,15 +41,16 @@ const Register = () => {
 
     const formik = useFormik({
         initialValues: initial,
-        onSubmit: (value) => { 
-            RegisterUser(value) 
+        onSubmit: (value) => {
+            setLoading(true)
+            RegisterUser(value)
         }
     })
 
     return (
         <>
             <Card className="shadow-xl" style={{ margin: 'auto', marginTop: 300, width: '35vw', maxWidth: 350, minWidth: 300 }} title="Register">
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} className="mb-2">
                     <div className="mb-2 w-full flex justify-between items-center">
                         <label >Name</label>
                         <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
@@ -61,7 +64,7 @@ const Register = () => {
                         <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
                     </div>
                     <div className="text-[12px] text-red-600">{error}</div>
-                    <button type="submit" className="transition-all duration-300 mt-3 px-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:shadow-lg">Register</button>
+                    <button type="submit" className="transition-all duration-300 mt-3 px-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:shadow-lg">{loading ? <Spin indicator={<LoadingOutlined spin />} size="small"></Spin>: 'Register'}</button>
                 </form>
                 Already have an account? <Link to="/">Login</Link>
             </Card>
