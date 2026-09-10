@@ -1,7 +1,10 @@
 import { Card } from "antd"
 import axios from "axios"
 import { useFormik } from "formik"
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+
+const url = import.meta.env.VITE_BASE_URL
 
 interface RegisterProps {
     name: string,
@@ -10,8 +13,22 @@ interface RegisterProps {
 }
 
 const Register = () => {
+    const [error, setError] = useState("")
+    const navigate = useNavigate()
+    
     const RegisterUser = async (values: RegisterProps) => {
-        await axios.post('https://test-i1rm.onrender.com/API/Auth/register', values)
+        const response = await axios.post(url+'Auth/register', values)
+
+        console.log(response.data)
+
+        if (response.data.statusCode != 201){
+            setError(response.data.message)
+
+            return
+        }
+
+        setError("")
+        navigate("/")
     }
 
     const initial: RegisterProps = {
@@ -22,24 +39,31 @@ const Register = () => {
 
     const formik = useFormik({
         initialValues: initial,
-        onSubmit: (value) => { RegisterUser(value) }
+        onSubmit: (value) => { 
+            RegisterUser(value) 
+        }
     })
 
     return (
         <>
-            <Card style={{ margin: 'auto', marginTop: 300, width: 400 }} title="Register">
-                <div className="text-left">
-                    <form onSubmit={formik.handleSubmit}>
-                        <label>Name</label> <br />
-                        <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input><br />
-                        <label>Email</label> <br />
-                        <input name="email" type="text" onChange={formik.handleChange} value={formik.values.email} className="px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input><br />
-                        <label>Password</label> <br />
-                        <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} className="px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input><br />
-                        <button type="submit" className="mt-3 px-2 border border-gray-300 bg-gray-100 hover:bg-gray-300 rounded-md">Register</button>
-                    </form>
-                    <Link to="/">Login</Link>
-                </div>
+            <Card className="shadow-xl" style={{ margin: 'auto', marginTop: 300, width: '35vw', maxWidth: 350, minWidth: 300 }} title="Register">
+                <form onSubmit={formik.handleSubmit}>
+                    <div className="mb-2 w-full flex justify-between items-center">
+                        <label >Name</label>
+                        <input name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
+                    </div>
+                    <div className="mb-2 flex justify-between items-center">
+                        <label>Email</label>
+                        <input name="email" type="email" onChange={formik.handleChange} value={formik.values.email} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
+                    </div>
+                    <div className="mb-2 flex justify-between items-center">
+                        <label>Password</label>
+                        <input name="password" type="text" onChange={formik.handleChange} value={formik.values.password} className="hover:shadow-lg px-2 text-[14px] border border-gray-300 outline-none rounded-md"></input>
+                    </div>
+                    <div className="text-[12px] text-red-600">{error}</div>
+                    <button type="submit" className="transition-all duration-300 mt-3 px-2 border border-gray-300 rounded-md hover:bg-gray-100 hover:shadow-lg">Register</button>
+                </form>
+                Already have an account? <Link to="/">Login</Link>
             </Card>
         </>
     )

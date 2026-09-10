@@ -49,6 +49,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<JWTService>();
 
 var app = builder.Build();
 

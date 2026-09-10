@@ -39,13 +39,47 @@ namespace backend.Services
             {
                 Email = user.Email,
                 Name = user.Name,
-                Password = hashedPassword
+                Password = hashedPassword,
+                ProfileImage = user.ProfileImage
             };
 
             await userSchema.InsertOneAsync(newUser);
 
             response.StatusCode = 201;
             response.Message = "User created successfully";
+
+            return response;
+        }
+
+
+        public async Task<ApiResponseWithData<LoginResponseDTO>> LoginUser(LoginRequestDTO loginRequest)
+        {
+            ApiResponseWithData<LoginResponseDTO> response = new ApiResponseWithData<LoginResponseDTO>();
+            response.Data = new();
+
+            UserSchema existUser = await userSchema.Find(us => us.Email == loginRequest.Email).FirstOrDefaultAsync();
+
+            if (existUser == null)
+            {
+                response.StatusCode = 404;
+                response.Message = "User does not exist";
+
+                return response;
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, existUser.Password))
+            {
+                response.StatusCode = 401;
+                response.Message = "Wrong user email or password";
+
+                return response;
+            }
+
+            response.StatusCode = 200;
+            response.Message = "User logged in successfully";
+            response.Data.Id = existUser.Id!;
+            response.Data.Name = existUser.Name;
+            response.Data.Email = existUser.Email;
 
             return response;
         }

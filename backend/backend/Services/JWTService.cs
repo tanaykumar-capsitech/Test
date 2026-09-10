@@ -15,17 +15,17 @@ namespace backend.Services
             _configuration = configuration;
         }
 
-        public string GenerateAccessToken(UserSchema user)
+        public string GenerateAccessToken(string userId, string userName, string userEmail)
         {
             var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id!),
-            new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.Name, user.Name)
-        };
+            {
+                new(JwtRegisteredClaimNames.Sub, userId),
+                new(JwtRegisteredClaimNames.Email, userName),
+                new(JwtRegisteredClaimNames.Name, userEmail)
+            };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["JwtService:SecretKey"]!));
+                Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
