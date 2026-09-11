@@ -53,7 +53,7 @@ namespace backend.Controllers
 
             if(loginUser.Data != null)
             {
-                if (loginUser.Data.Id != null || loginUser.Data.Name != null || loginUser.Data.Email != null)
+                if (loginUser.Data.Id != null && loginUser.Data.Name != null && loginUser.Data.Email != null)
                 {
                     string accessToken = jwtService.GenerateAccessToken(loginUser.Data.Id, loginUser.Data.Name, loginUser.Data.Email);
 
